@@ -46,4 +46,6 @@ drawWord r list = list !! r !! 0
 
 correct :: String -> [String] -> Bool
 correct _ [] = False
-correct rep (x:xs) = if (rep==x) then True else correct rep xs
+correct rep (x:xs)
+	| rep==x = True
+	| otherwise = correct rep xs
