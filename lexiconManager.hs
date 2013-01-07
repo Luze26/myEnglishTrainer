@@ -1,4 +1,5 @@
 import Definition
+import qualified Data.Text as T
 import System.IO
 import System.Environment( getArgs )
 
@@ -22,7 +23,14 @@ addWord path = do
 		sol <- addTranslations solution
 		putStrLn "Binder ?"
 		lexicon <- getLine
-		appendFile (path ++ lexicon) $ (show $ Definition {word = word, solutions = sol}) ++ "\n"
+		append ((show Definition {word = word, solutions = sol}) ++ "\n") path $ map T.unpack $ T.splitOn (T.pack " | ") $ T.pack lexicon
+
+
+-- append ////////////////////////////////////////////////////////////////
+append :: String -> String -> [String] -> IO ()
+append _ _ [] = return ()
+append def path (x:xs) = do 	appendFile (path ++ x) def
+				append def path xs
 
 
 -- addTranslations ////////////////////////////////////////////////////////////////
