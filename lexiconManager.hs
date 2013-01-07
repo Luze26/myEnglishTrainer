@@ -1,23 +1,28 @@
 import Definition
 import System.IO
+import System.Environment( getArgs )
 
 -- main ////////////////////////////////////////////////////////////////
 main = do
+	args <- getArgs
 	putStrLn "* a : add words\n* q : quit"
 	choix <- getLine	
 	if choix == "q" then return () 
 	else do
-		case choix of	"a" 	-> addWord
+		case choix of	"a" 	-> addWord $ args !! 0
 				_ 	-> main
 		main
 
 
 -- addWord ////////////////////////////////////////////////////////////////
-addWord :: IO ()
-addWord = do	putStrLn "Word/Term ?"
+addWord :: String -> IO ()
+addWord path = do
+		putStrLn "Word/Term ?"
 		word <- getLine
 		sol <- addTranslations solution
-		appendFile "lexicon.txt" $ (show $ Definition {word = word, solutions = sol}) ++ "\n"
+		putStrLn "Binder ?"
+		lexicon <- getLine
+		appendFile (path ++ lexicon) $ (show $ Definition {word = word, solutions = sol}) ++ "\n"
 
 
 -- addTranslations ////////////////////////////////////////////////////////////////
