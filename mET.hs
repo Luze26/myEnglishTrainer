@@ -20,8 +20,9 @@ play i list = do
 		rand <- randomRIO (0 :: Int, length list - 1)
 		putStrLn $ drawWord rand list
 		l <- getLine
-		displaySolution $ list !! rand
-		if correct l $ tail $ list !! rand
+		let solutions = tail $ list !! rand in do
+		putStrLn $ foldl (\deck x -> "\n+" ++ x ++ deck) "" $ solutions
+		if correct l $ solutions
 			then do
 				putStrLn ":)" 
 				play (i+1) $ let (ys,zs) = splitAt rand list in ys ++ (tail zs)
@@ -29,8 +30,6 @@ play i list = do
 				putStrLn ":(" 
 				play (i+1) list
 		return ()
-
-
 
 createList :: String -> [[String]]
 createList input = [ map T.unpack $ head x : (T.splitOn slash $ last x) | x <- map (T.splitOn tab) $ map T.pack $ lines input]
@@ -40,9 +39,6 @@ createList input = [ map T.unpack $ head x : (T.splitOn slash $ last x) | x <- m
 
 drawWord :: Int -> [[String]] -> String
 drawWord r list = list !! r !! 0
-
-displaySolution :: [String] -> IO ()
-displaySolution solution = putStrLn $ foldl1 (\deck x -> "\n+" ++ x ++ deck) solution
 
 correct :: String -> [String] -> Bool
 correct _ [] = False
