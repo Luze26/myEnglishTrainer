@@ -1,4 +1,5 @@
 import qualified Data.Text as T
+import Data.Char
 import System.Random( randomRIO )
 import System.IO
 import System.Environment( getArgs )
@@ -14,15 +15,12 @@ main = do
 
 
 play :: Int -> [[String]] -> IO ()
-play  i [] = do
-		putStr "Done in "
-		print i
-		putStrLn "shots !!"
+play  i [] = do putStr $ "Done in " ++ ((intToDigit i) : "shots !!")
 play i list = do
 		rand <- randomRIO (0 :: Int, length list - 1)
 		putStrLn $ drawWord rand list
 		l <- getLine
-		print $ tail $ list !! rand
+		displaySolution $ list !! rand
 		if correct l $ list !! rand 
 			then do
 				putStrLn ":)" 
@@ -35,14 +33,16 @@ play i list = do
 
 
 createList :: String -> [[String]]
-createList input = [ head x : (map T.unpack (T.splitOn (T.pack "/") (T.pack $ unwords $ tail x))) | x <- map words $ lines input]
-
+createList input = [ map T.unpack $ head x : (T.splitOn slash $ last x) | x <- map (T.splitOn tab) $ map T.pack $ lines input]
+	where tab = T.pack "\t"
+	      slash = T.pack "/"
 
 
 drawWord :: Int -> [[String]] -> String
 drawWord r list = list !! r !! 0
 
-
+displaySolution :: [String] -> IO ()
+displaySolution solution = putStrLn $ foldl1 (\deck x -> "\n+" ++ x ++ deck) solution
 
 correct :: String -> [String] -> Bool
 correct _ [] = False
