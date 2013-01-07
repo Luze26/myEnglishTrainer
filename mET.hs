@@ -1,5 +1,4 @@
 import qualified Data.Text as T
-import Data.Char
 import System.Random( randomRIO )
 import System.IO
 import System.Environment( getArgs )
@@ -14,7 +13,7 @@ main = do
 
 -- play ////////////////////////////////////////////////////////////////
 play :: Int -> [[String]] -> IO ()
-play  i [] = do putStrLn $ "Done in " ++ ((intToDigit i) : " shots !!")
+play  i [] = do putStrLn $ "Done in " ++ (show i) ++ " shots !!"
 play i list = do
 		rand <- randomRIO (0 :: Int, length list - 1)
 		let 	tuple = list !! rand 
