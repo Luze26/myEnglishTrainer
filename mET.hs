@@ -15,13 +15,13 @@ main = do
 
 
 play :: Int -> [[String]] -> IO ()
-play  i [] = do putStr $ "Done in " ++ ((intToDigit i) : "shots !!")
+play  i [] = do putStrLn $ "Done in " ++ ((intToDigit i) : " shots !!")
 play i list = do
 		rand <- randomRIO (0 :: Int, length list - 1)
 		putStrLn $ drawWord rand list
 		l <- getLine
 		displaySolution $ list !! rand
-		if correct l $ list !! rand 
+		if correct l $ tail $ list !! rand
 			then do
 				putStrLn ":)" 
 				play (i+1) $ let (ys,zs) = splitAt rand list in ys ++ (tail zs)
