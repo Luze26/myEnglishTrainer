@@ -18,6 +18,7 @@ addWord path = do
 		putStrLn "Binder ?"
 		lexicon <- getLine
 		append ((show Definition {word = word, solutions = sol}) ++ "\n") path $ map T.unpack $ T.splitOn (T.pack " | ") $ T.pack lexicon
+		addWord path
 
 
 -- append ////////////////////////////////////////////////////////////////
