@@ -6,13 +6,7 @@ import System.Environment( getArgs )
 -- main ////////////////////////////////////////////////////////////////
 main = do
 	args <- getArgs
-	putStrLn "* a : add words\n* q : quit"
-	choix <- getLine	
-	if choix == "q" then return () 
-	else do
-		case choix of	"a" 	-> addWord $ args !! 0
-				_ 	-> main
-		main
+	addWord $ args !! 0
 
 
 -- addWord ////////////////////////////////////////////////////////////////
